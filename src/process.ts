@@ -1,5 +1,4 @@
-// function processImage(path: string, width: number, height: number, quality: number, format: string) {}
-
+import fs from "fs";
 import path from "path";
 import { AssetResizerAsset, AssetResizerConfig, AssetResizerOutput } from "./types.js";
 import { loadConfig } from "./config.js";
@@ -18,6 +17,15 @@ export async function parseAllAssets(config?: AssetResizerConfig) {
   const baseUrl = path.resolve(config.baseUrl ?? ".");
   const inputDir = config.inputDir ? path.join(baseUrl, config.inputDir) : baseUrl;
   const outputDir = path.join(baseUrl, config.outputDir);
+  if (!fs.existsSync(baseUrl)) {
+    err("Base path not found. Check your config.");
+  }
+  if (!fs.existsSync(inputDir)) {
+    err("Input path not found. Check your config.");
+  }
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
 
   if (!config.assets.length) {
     err("No assets to parse. Check your config.");
