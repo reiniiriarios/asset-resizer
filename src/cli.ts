@@ -36,10 +36,26 @@ yargs(hideBin(process.argv))
   )
   .command(
     "parse",
-    "Parse assets based on config",
-    () => {},
-    () => {
-      parseAllAssets();
+    "Parse assets",
+    {
+      config: {
+        alias: "c",
+        describe: "Optional path to config file",
+        default: "",
+      },
+    },
+    (argv) => {
+      if (argv.config) {
+        loadConfig(argv.config)
+          .then((cfg) => {
+            if (cfg) {
+              parseAllAssets(cfg);
+            }
+          })
+          .catch((e) => err(e));
+      } else {
+        parseAllAssets();
+      }
     },
   )
   .strict()

@@ -4,7 +4,7 @@ import path from "path";
 import { AssetResizerAsset, AssetResizerConfig, AssetResizerOutput } from "./types.js";
 import { loadConfig } from "./config.js";
 import sharp from "sharp";
-import { err, log } from "./log.js";
+import { err } from "./log.js";
 
 export async function parseAllAssets(config?: AssetResizerConfig) {
   if (!config) {
@@ -20,7 +20,7 @@ export async function parseAllAssets(config?: AssetResizerConfig) {
   const outputDir = path.join(baseUrl, config.outputDir);
 
   if (!config.assets.length) {
-    log("No assets to parse. Check your config.");
+    err("No assets to parse. Check your config.");
     return;
   }
 
