@@ -1,0 +1,52 @@
+{
+  "name": "asset-resizer",
+  "displayName": "Asset Resizer",
+  "description": "Resize assets as part of build workflow.",
+  "version": "0.0.1",
+  "main": "dist/main.js",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "asset-resizer": "dist/cli.js"
+  },
+  "typings": "./dist/main.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "GPL-3.0-or-later",
+  "author": {
+    "name": "Emma Litwa-Vulcu",
+    "email": "80431903+reiniiriarios@users.noreply.github.com"
+  },
+  "homepage": "https://github.com/reiniiriarios/asset-resizer#readme",
+  "bugs": {
+    "url": "https://github.com/reiniiriarios/asset-resizer/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reiniiriarios/asset-resizer.git"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "tsc --build --declaration",
+    "lint": "eslint ./src/**/*"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "sharp": "^0.33.3",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/node": "^20.11.30",
+    "@types/yargs": "^17.0.32",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.7.0"
+  }
+}
