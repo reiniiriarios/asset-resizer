@@ -52,5 +52,21 @@ export default {
         },
       ],
     },
+    {
+      file: "500x400.svg",
+      output: [
+        {
+          filename: "icon.jpg",
+          width: 256,
+          fit: "cover",
+        },
+        {
+          filename: "large.jpg",
+          width: 800,
+          height: 600,
+          fit: "outside",
+        },
+      ],
+    },
   ],
 };
