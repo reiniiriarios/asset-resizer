@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import { AssetResizerConfig } from "./types.js";
-import { err, log } from "./log.js";
+import log from "./log.js";
 import chalk from "chalk";
 
 const PROJ_ROOT = path.resolve("./");
@@ -37,17 +37,17 @@ export async function loadConfig(file?: string): Promise<AssetResizerConfig | nu
       }
     }
     if (!file) {
-      err("Config not found.");
-      log(`Add config to ${chalk.cyan(`${PROJ_CFG_FILENAME}.js`)} in your project's root directory.`);
-      log(`See ${chalk.underline("@todo url here")} for documentation.`);
+      log.err("Config not found.");
+      log.msg(`Add config to ${chalk.cyan(`${PROJ_CFG_FILENAME}.js`)} in your project's root directory.`);
+      log.msg(`See ${chalk.underline("@todo url here")} for documentation.`);
       return null;
     }
   }
 
-  log(`Loading config from ${chalk.cyan(file)}...`);
+  log.msg(`Loading config from ${chalk.cyan(file)}...`);
   const filePath = path.join(PROJ_ROOT, file);
   if (!fs.existsSync(filePath)) {
-    err("Config not found.");
+    log.err("Config not found.");
     return null;
   }
   const cfg = await importConfigFromFile(filePath);
@@ -59,7 +59,7 @@ export async function loadConfig(file?: string): Promise<AssetResizerConfig | nu
 
 function validateConfig(cfg: AssetResizerConfig | null | undefined): boolean {
   if (!cfg) {
-    err("No asset resizer config loaded.");
+    log.err("No asset resizer config loaded.");
     return false;
   }
 
@@ -128,8 +128,8 @@ function validateConfig(cfg: AssetResizerConfig | null | undefined): boolean {
     }
   }
   if (errors.length > 0) {
-    err("Errors in asset resizer config:");
-    errors.forEach((e) => err(` * ${e}`));
+    log.err("Errors in asset resizer config:");
+    errors.forEach((e) => log.err(` * ${e}`));
     return false;
   }
 

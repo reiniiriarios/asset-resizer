@@ -4,7 +4,7 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import chalk from "chalk";
 import { loadConfig } from "./config.js";
-import { err, log } from "./log.js";
+import log from "./log.js";
 import { parseAllAssets } from "./process.js";
 
 yargs(hideBin(process.argv))
@@ -23,7 +23,7 @@ yargs(hideBin(process.argv))
     "",
     () => {},
     () => {
-      log(`See ${chalk.magenta("asset-resizer --help")} for command options.`);
+      log.msg(`See ${chalk.magenta("asset-resizer --help")} for command options.`);
     },
   )
   .command(
@@ -34,11 +34,11 @@ yargs(hideBin(process.argv))
       loadConfig(argv.config)
         .then((cfg) => {
           if (cfg) {
-            log(chalk.magenta("Asset Resizer Parsed Config:"));
-            log(cfg);
+            log.msg(chalk.magenta("Asset Resizer Parsed Config:"));
+            log.msg(cfg);
           }
         })
-        .catch((e) => err(e));
+        .catch((e) => log.err(e));
     },
   )
   .command(
@@ -53,7 +53,7 @@ yargs(hideBin(process.argv))
               parseAllAssets(cfg);
             }
           })
-          .catch((e) => err(e));
+          .catch((e) => log.err(e));
       } else {
         parseAllAssets();
       }

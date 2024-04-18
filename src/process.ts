@@ -3,7 +3,7 @@ import path from "path";
 import { AssetResizerAsset, AssetResizerConfig, AssetResizerOutput } from "./types.js";
 import { loadConfig } from "./config.js";
 import sharp from "sharp";
-import { err, log, progress } from "./log.js";
+import log from "./log.js";
 import chalk from "chalk";
 
 export async function parseAllAssets(config?: AssetResizerConfig | string): Promise<void> {
@@ -20,7 +20,7 @@ export async function parseAllAssets(config?: AssetResizerConfig | string): Prom
   }
 
   if (!cfg.assets.length) {
-    err("No assets to parse. Check your config.");
+    log.err("No assets to parse. Check your config.");
     return;
   }
 
@@ -28,19 +28,19 @@ export async function parseAllAssets(config?: AssetResizerConfig | string): Prom
   const numOutputs = cfg.assets.reduce((n, c) => n + c.output?.length ?? 0, 0);
   let numOutputsParsed = 0;
 
-  log("Processing assets...");
+  log.msg("Processing assets...");
   await parseEachAsset(cfg.assets);
 
   async function parseEachAsset(assets: AssetResizerAsset[]): Promise<void> {
     for (const asset of assets) {
       const assetPath = path.join(inputDir, asset.file);
       for (const output of asset.output) {
-        progress(numOutputsParsed, numOutputs);
+        log.progress(numOutputsParsed, numOutputs);
         await parseAssetOutput(assetPath, output);
         numOutputsParsed++;
       }
     }
-    log(`\r${chalk.green("Done!")} Processed: ${numAssets} input assets, ${numOutputs} created.`.padEnd(91, " "));
+    log.msg(`\r${chalk.green("Done!")} Processed: ${numAssets} input assets, ${numOutputs} created.`.padEnd(91, " "));
   }
 
   async function parseAssetOutput(assetPath: string, output: AssetResizerOutput): Promise<boolean> {
@@ -57,8 +57,8 @@ export async function parseAllAssets(config?: AssetResizerConfig | string): Prom
           throw e;
         });
     } catch (e: any) {
-      log("\n");
-      err(e.message ?? e.toString());
+      log.msg("\n");
+      log.err(e.message ?? e.toString());
       return false;
     }
 
