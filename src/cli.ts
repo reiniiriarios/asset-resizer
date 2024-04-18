@@ -28,8 +28,10 @@ yargs(hideBin(process.argv))
     () => {
       loadConfig()
         .then((cfg) => {
-          log(chalk.magenta("Asset Resizer Parsed Config:"));
-          log(cfg);
+          if (cfg) {
+            log(chalk.magenta("Asset Resizer Parsed Config:"));
+            log(cfg);
+          }
         })
         .catch((e) => err(e));
     },
