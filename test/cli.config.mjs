@@ -3,7 +3,7 @@
 export default {
   baseUrl: "./test",
   inputDir: "assets",
-  outputDir: "build-cli",
+  outputDir: "build/cli",
   flatten: true,
   assets: [
     {

@@ -3,7 +3,7 @@
 export default {
   baseUrl: "./test",
   inputDir: "assets",
-  outputDir: "build",
+  outputDir: "build/test1",
   flatten: true,
   assets: [
     {

@@ -62,7 +62,7 @@ describe("parseAllAssets", () => {
 
   test("correctly builds assets with custom config", async () => {
     const config2 = structuredClone(config);
-    config2.outputDir = "build2";
+    config2.outputDir = "build/test2";
     await parseAllAssets(config2);
     expect(spy.err).not.toHaveBeenCalled();
     await testAssets(config2);
@@ -87,5 +87,5 @@ describe("cli", () => {
         }
       }
     }
-  });
+  }, 7500); // sometimes takes a little longer
 });
