@@ -2,7 +2,7 @@
   "name": "asset-resizer",
   "displayName": "Asset Resizer",
   "description": "Resize assets as part of build workflow.",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "dist/main.js",
   "type": "module",
   "files": [
@@ -37,8 +37,7 @@
     "lint": "eslint ./src/**/*",
     "test": "npm run test:clean && node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:clean": "node scripts/cleanTests.js",
-    "test:script": "node ./test/programmatic.js",
-    "test:cli": "asset-resizer parse --config test/assetresizer.config.mjs"
+    "test:cli": "asset-resizer parse --config test/test.config.mjs"
   },
   "dependencies": {
     "chalk": "^5.3.0",

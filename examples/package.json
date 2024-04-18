@@ -1,0 +1,12 @@
+{
+  "name": "example-package-json",
+  "scripts": {
+    "//": "Run asset-resizer with config from project directory.",
+    "build:assets": "asset-resizer parse",
+    "///": "Run asset-resizer with specified config.",
+    "build:assets2": "asset-resizer parse --config=custom.config.js",
+    "////": "Test asset-resizer config for errors.",
+    "build:assets:test": "asset-resizer config",
+    "build:assets:test2": "asset-resizer config --config=custom.config.js"
+  }
+}
