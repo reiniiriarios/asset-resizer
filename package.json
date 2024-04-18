@@ -36,7 +36,7 @@
     "build:clean": "node scripts/clean.js",
     "lint": "eslint ./src/**/*",
     "test": "npm run test:clean && node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "test:clean": "node test/clean.js",
+    "test:clean": "node scripts/cleanTests.js",
     "test:script": "node ./test/programmatic.js",
     "test:cli": "asset-resizer parse --config test/assetresizer.config.mjs"
   },
