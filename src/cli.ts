@@ -7,12 +7,17 @@ import { loadConfig } from "./config.js";
 import { err, log } from "./log.js";
 import { parseAllAssets } from "./process.js";
 
-export interface CliOptions {}
-
 yargs(hideBin(process.argv))
   .scriptName("asset-resizer")
   .usage("Usage: $0 <command> [options]")
   .help("help")
+  .alias("help", "h")
+  .alias("version", "v")
+  .option("config", {
+    alias: "c",
+    describe: "Path to custom config file",
+    type: "string",
+  })
   .command(
     "*",
     "",
@@ -25,8 +30,8 @@ yargs(hideBin(process.argv))
     "config",
     "Output parsed config",
     () => {},
-    () => {
-      loadConfig()
+    (argv) => {
+      loadConfig(argv.config)
         .then((cfg) => {
           if (cfg) {
             log(chalk.magenta("Asset Resizer Parsed Config:"));
@@ -39,13 +44,7 @@ yargs(hideBin(process.argv))
   .command(
     "parse",
     "Parse assets",
-    {
-      config: {
-        alias: "c",
-        describe: "Optional path to config file",
-        default: "",
-      },
-    },
+    () => {},
     (argv) => {
       if (argv.config) {
         loadConfig(argv.config)
