@@ -44,6 +44,10 @@ export async function parseAllAssets(config?: AssetResizerConfig) {
   }
 
   async function parseAssetOutput(assetPath: string, output: AssetResizerOutput) {
+    if (!config?.flatten) {
+      // @todo create intermediate directories
+    }
+
     const outputPath = path.join(outputDir, output.filename);
     await sharp(assetPath)
       .resize(output.width, output.height ?? output.width, { fit: output.fit ?? "inside" })
