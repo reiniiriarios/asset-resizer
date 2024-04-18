@@ -2,6 +2,7 @@
 /test
 /scripts
 
+.github
 .editorconfig
 .eslintignore
 .gitignore
