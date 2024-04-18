@@ -1,5 +1,6 @@
 /dist
-assetresizer.config.*
+/assetresizer.config.*
+/test/build
 
 ## Common to npmignore ##
 
