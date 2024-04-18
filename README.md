@@ -92,13 +92,13 @@ parseAllAssets({
 
 ### `AssetResizerOutput`
 
-| Option     | Type       | Description                                                                                                                                                            |
-| ---------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `filename` | `string`   | Name of file to create. Extension may be one of: `jpg`, `png`, `webp`, `avif`, `tiff`, `gif`, `dzi`, `v`.                                                              |
-| `width`    | `number?`  | Width, in pixels, of the target output file. One of `width` or `copy` must be present.                                                                                 |
-| `height`   | `number?`  | (optional) Height, in pixels, of the target output file. If not specified, uses `width`.                                                                               |
-| `copy`     | `boolean?` | Optionally copy the file instead of resizing. One of `width` or `copy` must be present.                                                                                |
-| `fit`      | `string?`  | One of `cover`, `contain`, `fill`, `inside`, `outside`. Defaults to `cover`. See [sharp documentation](https://sharp.pixelplumbing.com/api-resize#resize) for details. |
+| Option   | Type       | Description                                                                                                                                                            |
+| -------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `file`   | `string`   | Name of file to create. Extension may be one of: `jpg`, `png`, `webp`, `avif`, `tiff`, `gif`, `dzi`, `v`.                                                              |
+| `width`  | `number?`  | Width, in pixels, of the target output file. One of `width` or `copy` must be present.                                                                                 |
+| `height` | `number?`  | (optional) Height, in pixels, of the target output file. If not specified, uses `width`.                                                                               |
+| `copy`   | `boolean?` | Optionally copy the file instead of resizing. One of `width` or `copy` must be present.                                                                                |
+| `fit`    | `string?`  | One of `cover`, `contain`, `fill`, `inside`, `outside`. Defaults to `cover`. See [sharp documentation](https://sharp.pixelplumbing.com/api-resize#resize) for details. |
 
 ## Development
 

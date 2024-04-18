@@ -12,7 +12,7 @@ export interface AssetResizerAsset {
 }
 
 export interface AssetResizerOutput {
-  filename: string;
+  file: string;
   width?: number;
   height?: number;
   fit?: "cover" | "contain" | "fill" | "inside" | "outside";

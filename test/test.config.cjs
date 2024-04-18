@@ -8,7 +8,7 @@ module.exports = {
       file: "300x300.svg",
       output: [
         {
-          filename: "50x50.png",
+          file: "50x50.png",
           width: 50,
         },
       ],

@@ -109,19 +109,19 @@ function validateConfig(cfg: AssetResizerConfig | null | undefined): boolean {
       } else {
         // Outputs config
         for (const output of asset.output) {
-          if (!output.filename) {
+          if (!output.file) {
             errors.push(`No file for output in asset '${asset.file}'`);
-          } else if (output.filename.match(FORBIDDEN_CHARS)) {
+          } else if (output.file.match(FORBIDDEN_CHARS)) {
             errors.push(`Illegal characters in asset file`);
           }
           if (!output.width && !output.copy) {
-            errors.push(`No width specified and copy flag not present for '${output.filename}'`);
+            errors.push(`No width specified and copy flag not present for '${output.file}'`);
           }
           if (!Number.isInteger(output.width) || (!!output.height && !Number.isInteger(output.height))) {
-            errors.push(`Width/height for '${output.filename}' not integers`);
+            errors.push(`Width/height for '${output.file}' not integers`);
           }
           if (!!output.fit && !["cover", "contain", "fill", "inside", "outside"].includes(output.fit)) {
-            errors.push(`Unrecognized 'fit' value for '${output.filename}'`);
+            errors.push(`Unrecognized 'fit' value for '${output.file}'`);
           }
         }
       }

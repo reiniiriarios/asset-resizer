@@ -21,16 +21,16 @@ parseAllAssets({
       file: "300x300.svg",
       output: [
         {
-          filename: "50x50.png",
+          file: "50x50.png",
           width: 50,
         },
         {
-          filename: "200x100.png",
+          file: "200x100.png",
           width: 200,
           height: 100,
         },
         {
-          filename: "200x100-contain.png",
+          file: "200x100-contain.png",
           width: 200,
           height: 100,
           fit: "contain",
@@ -41,12 +41,12 @@ parseAllAssets({
       file: "subdir/500x400.svg",
       output: [
         {
-          filename: "icon.jpg",
+          file: "icon.jpg",
           width: 256,
           fit: "cover",
         },
         {
-          filename: "large.jpg",
+          file: "large.jpg",
           width: 800,
           height: 600,
           fit: "outside",

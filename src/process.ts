@@ -52,10 +52,18 @@ export async function parseAllAssets(config?: AssetResizerConfig | string): Prom
       }
     }
 
+    // If the output has slashes, create that directory tree first.
+    if (output.file.includes("/")) {
+      const addlDirs = path.join(outputPath, output.file.split("/").slice(0, -1).join("/"));
+      if (!fs.existsSync(addlDirs)) {
+        fs.mkdirSync(addlDirs, { recursive: true });
+      }
+    }
+
     try {
       await sharp(path.join(inputDir, assetPath))
         .resize(output.width, output.height ?? output.width, { fit: output.fit ?? "inside" })
-        .toFile(path.join(outputPath, output.filename))
+        .toFile(path.join(outputPath, output.file))
         .catch((e) => {
           throw e;
         });

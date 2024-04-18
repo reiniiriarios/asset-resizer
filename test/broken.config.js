@@ -10,16 +10,16 @@ export default {
           width: 50,
         },
         {
-          filename: "150x150.png",
+          file: "150x150.png",
           width: "invalid",
         },
         {
-          filename: "404.png",
+          file: "file.ext",
           width: 200,
           height: 100,
         },
         {
-          filename: "200x100-cover.png",
+          file: "200x100-cover.png",
           width: 200,
           fit: "invalid",
         },
@@ -29,11 +29,11 @@ export default {
       file: ":invalid-asset.svg",
       output: [
         {
-          filename: ":invalid-output.jpg",
+          file: ":invalid-output.jpg",
           width: 256,
         },
         {
-          filename: "large.jpg",
+          file: "large.jpg",
           width: 800,
         },
       ],
