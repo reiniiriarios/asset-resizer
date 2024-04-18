@@ -1,3 +1,5 @@
+// This file would ordinarily be in the root directory of a project,
+// therefore the paths are configured as though it is.
 export default {
   baseUrl: "./test",
   inputDir: "assets",
