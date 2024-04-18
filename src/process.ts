@@ -6,18 +6,15 @@ import sharp from "sharp";
 import { err, log, progress } from "./log.js";
 import chalk from "chalk";
 
-export async function parseAllAssets(config?: AssetResizerConfig) {
-  if (!config) {
-    const loadedConfig = await loadConfig();
-    if (!loadedConfig) {
-      return;
-    }
-    config = loadedConfig;
+export async function parseAllAssets(config?: AssetResizerConfig | string) {
+  const cfg: AssetResizerConfig | null = !config || typeof config === "string" ? await loadConfig(config) : config;
+  if (!cfg) {
+    return;
   }
 
-  const baseUrl = path.resolve(config.baseUrl ?? ".");
-  const inputDir = config.inputDir ? path.join(baseUrl, config.inputDir) : baseUrl;
-  const outputDir = path.join(baseUrl, config.outputDir);
+  const baseUrl = path.resolve(cfg.baseUrl ?? ".");
+  const inputDir = cfg.inputDir ? path.join(baseUrl, cfg.inputDir) : baseUrl;
+  const outputDir = path.join(baseUrl, cfg.outputDir);
   if (!fs.existsSync(baseUrl)) {
     err("Base path not found. Check your config.");
   }
@@ -28,17 +25,17 @@ export async function parseAllAssets(config?: AssetResizerConfig) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
 
-  if (!config.assets.length) {
+  if (!cfg.assets.length) {
     err("No assets to parse. Check your config.");
     return;
   }
 
-  const numAssets = config.assets.length;
-  const numOutputs = config.assets.reduce((n, c) => n + c.output?.length ?? 0, 0);
+  const numAssets = cfg.assets.length;
+  const numOutputs = cfg.assets.reduce((n, c) => n + c.output?.length ?? 0, 0);
   let numOutputsParsed = 0;
 
   log("Processing...");
-  parseEachAsset(config.assets);
+  await parseEachAsset(cfg.assets);
 
   async function parseEachAsset(assets: AssetResizerAsset[]) {
     for (const asset of assets) {
@@ -53,7 +50,7 @@ export async function parseAllAssets(config?: AssetResizerConfig) {
   }
 
   async function parseAssetOutput(assetPath: string, output: AssetResizerOutput) {
-    if (!config?.flatten) {
+    if (!cfg?.flatten) {
       // @todo create intermediate directories
     }
 
