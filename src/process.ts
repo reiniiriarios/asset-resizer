@@ -25,6 +25,7 @@ export async function parseAllAssets(config?: AssetResizerConfig | string): Prom
   }
 
   const numAssets = cfg.assets.length;
+  // eslint-disable-next-line no-constant-binary-expression
   const numOutputs = cfg.assets.reduce((n, c) => n + c.output?.length ?? 0, 0);
   let numOutputsParsed = 0;
 
@@ -67,6 +68,7 @@ export async function parseAllAssets(config?: AssetResizerConfig | string): Prom
         .catch((e) => {
           throw e;
         });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       log.msg("\n");
       log.err(e.message ?? e.toString());

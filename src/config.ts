@@ -11,7 +11,7 @@ const PROJ_CFG_FILE = path.join(PROJ_ROOT, PROJ_CFG_FILENAME);
 // \u0000-\u001f\u007f-\u009f       control codes
 // \u200B-\u200D\uFEFF\u2028\u2029  zero-width chars
 // allow slashes, they are part of the path
-const FORBIDDEN_CHARS = /[<>:"|\?\*\u200B-\u200D\uFEFF\u2028\u2029\u0000-\u001f\u007f-\u009f]/;
+const FORBIDDEN_CHARS = /[<>:"|?*\u200B-\u200D\uFEFF\u2028\u2029\u0000-\u001f\u007f-\u009f]/;
 
 const configDefaults: AssetResizerConfig = {
   baseUrl: ".",
@@ -63,7 +63,7 @@ function validateConfig(cfg: AssetResizerConfig | null | undefined): boolean {
     return false;
   }
 
-  let errors: string[] = [];
+  const errors: string[] = [];
 
   // Base config
   let baseUrlResolved = ".";

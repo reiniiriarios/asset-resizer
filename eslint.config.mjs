@@ -84,5 +84,7 @@ export default tseslint.config({
     "linebreak-style": ["error", "unix"],
     "eol-last": ["error", "always"],
     "template-curly-spacing": ["error", "never"],
+    "no-control-regex": "off",
+    "no-extra-boolean-cast": "off",
   },
 });
