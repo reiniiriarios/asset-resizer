@@ -34,7 +34,8 @@
   "scripts": {
     "build": "tsc --build --declaration",
     "lint": "eslint ./src/**/*",
-    "test:resize": "asset-resizer parse --config test/assetresizer.config.mjs"
+    "test:script": "node ./test/programmatic.js",
+    "test:cli": "asset-resizer parse --config test/assetresizer.config.mjs"
   },
   "dependencies": {
     "chalk": "^5.3.0",
