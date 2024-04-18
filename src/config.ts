@@ -113,6 +113,12 @@ function validateConfig(cfg: AssetResizerConfig | null | undefined): boolean {
             errors.push(`No file for output in asset '${asset.file}'`);
           } else if (output.file.match(FORBIDDEN_CHARS)) {
             errors.push(`Illegal characters in asset file`);
+          } else if (
+            !["jpg", "jpeg", "png", "gif", "webp", "avif", "tiff", "dzi", "v"].some((ext) =>
+              output.file.endsWith(`.${ext}`),
+            )
+          ) {
+            errors.push(`Invalid file extension for output '${output.file}'`);
           }
           if (!output.width && !output.copy) {
             errors.push(`No width specified and copy flag not present for '${output.file}'`);
