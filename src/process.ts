@@ -34,7 +34,7 @@ export async function parseAllAssets(config?: AssetResizerConfig | string) {
   const numOutputs = cfg.assets.reduce((n, c) => n + c.output?.length ?? 0, 0);
   let numOutputsParsed = 0;
 
-  log("Processing...");
+  log("Processing assets...");
   await parseEachAsset(cfg.assets);
 
   async function parseEachAsset(assets: AssetResizerAsset[]) {
