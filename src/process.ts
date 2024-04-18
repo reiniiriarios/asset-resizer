@@ -6,7 +6,7 @@ import sharp from "sharp";
 import { err, log, progress } from "./log.js";
 import chalk from "chalk";
 
-export async function parseAllAssets(config?: AssetResizerConfig | string) {
+export async function parseAllAssets(config?: AssetResizerConfig | string): Promise<void> {
   const cfg: AssetResizerConfig | null = !config || typeof config === "string" ? await loadConfig(config) : config;
   if (!cfg) {
     return;
@@ -15,12 +15,6 @@ export async function parseAllAssets(config?: AssetResizerConfig | string) {
   const baseUrl = path.resolve(cfg.baseUrl ?? ".");
   const inputDir = cfg.inputDir ? path.join(baseUrl, cfg.inputDir) : baseUrl;
   const outputDir = path.join(baseUrl, cfg.outputDir);
-  if (!fs.existsSync(baseUrl)) {
-    err("Base path not found. Check your config.");
-  }
-  if (!fs.existsSync(inputDir)) {
-    err("Input path not found. Check your config.");
-  }
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
@@ -37,7 +31,7 @@ export async function parseAllAssets(config?: AssetResizerConfig | string) {
   log("Processing assets...");
   await parseEachAsset(cfg.assets);
 
-  async function parseEachAsset(assets: AssetResizerAsset[]) {
+  async function parseEachAsset(assets: AssetResizerAsset[]): Promise<void> {
     for (const asset of assets) {
       const assetPath = path.join(inputDir, asset.file);
       for (const output of asset.output) {
@@ -49,18 +43,25 @@ export async function parseAllAssets(config?: AssetResizerConfig | string) {
     log(`\r${chalk.green("Done!")} Processed: ${numAssets} input assets, ${numOutputs} created.`.padEnd(91, " "));
   }
 
-  async function parseAssetOutput(assetPath: string, output: AssetResizerOutput) {
+  async function parseAssetOutput(assetPath: string, output: AssetResizerOutput): Promise<boolean> {
     if (!cfg?.flatten) {
       // @todo create intermediate directories
     }
 
     const outputPath = path.join(outputDir, output.filename);
-    await sharp(assetPath)
-      .resize(output.width, output.height ?? output.width, { fit: output.fit ?? "inside" })
-      .toFile(outputPath)
-      .catch((e) => {
-        log("\n");
-        err(e);
-      });
+    try {
+      await sharp(assetPath)
+        .resize(output.width, output.height ?? output.width, { fit: output.fit ?? "inside" })
+        .toFile(outputPath)
+        .catch((e) => {
+          throw e;
+        });
+    } catch (e: any) {
+      log("\n");
+      err(e.message ?? e.toString());
+      return false;
+    }
+
+    return true;
   }
 }

@@ -8,6 +8,11 @@ const PROJ_ROOT = path.resolve("./");
 const PROJ_CFG_FILENAME = "assetresizer.config";
 const PROJ_CFG_FILE = path.join(PROJ_ROOT, PROJ_CFG_FILENAME);
 
+// \u0000-\u001f\u007f-\u009f       control codes
+// \u200B-\u200D\uFEFF\u2028\u2029  zero-width chars
+// allow slashes, they are part of the path
+const FORBIDDEN_CHARS = /[<>:"|\?\*\u200B-\u200D\uFEFF\u2028\u2029\u0000-\u001f\u007f-\u009f]/;
+
 const configDefaults: AssetResizerConfig = {
   baseUrl: ".",
   inputDir: "",
@@ -24,28 +29,109 @@ export async function loadConfig(file?: string): Promise<AssetResizerConfig | nu
     return cfg.default;
   }
 
-  if (file) {
-    log(`Loading config from ${chalk.cyan(file)}...`);
-    const filePath = path.join(PROJ_ROOT, file);
-    if (!fs.existsSync(filePath)) {
+  if (!file) {
+    for (const ext of [".js", ".mjs", ".cjs"]) {
+      if (fs.existsSync(PROJ_CFG_FILE + ext)) {
+        file = PROJ_CFG_FILE + ext;
+        break;
+      }
+    }
+    if (!file) {
       err("Config not found.");
+      log(`Add config to ${chalk.cyan(`${PROJ_CFG_FILENAME}.js`)} in your project's root directory.`);
+      log(`See ${chalk.underline("@todo url here")} for documentation.`);
       return null;
     }
-    const cfg = await importConfigFromFile(filePath);
-    // @todo confirm config
-    return { ...configDefaults, ...cfg };
   }
 
-  for (const ext of [".js", ".mjs", ".cjs"]) {
-    if (fs.existsSync(PROJ_CFG_FILE + ext)) {
-      log(`Loading config from ${chalk.cyan(PROJ_CFG_FILENAME + ext)}...`);
-      const cfg = await importConfigFromFile(PROJ_CFG_FILE + ext);
-      // @todo confirm config
-      return { ...configDefaults, ...cfg };
+  log(`Loading config from ${chalk.cyan(file)}...`);
+  const filePath = path.join(PROJ_ROOT, file);
+  if (!fs.existsSync(filePath)) {
+    err("Config not found.");
+    return null;
+  }
+  const cfg = await importConfigFromFile(filePath);
+  if (!validateConfig(cfg)) {
+    return null;
+  }
+  return { ...configDefaults, ...cfg };
+}
+
+function validateConfig(cfg: AssetResizerConfig | null | undefined): boolean {
+  if (!cfg) {
+    err("No asset resizer config loaded.");
+    return false;
+  }
+
+  let errors: string[] = [];
+
+  // Base config
+  let baseUrlResolved = ".";
+  if (!!cfg.baseUrl) {
+    if (cfg.baseUrl.match(FORBIDDEN_CHARS)) {
+      errors.push(`Illegal characters in base url`);
+    } else {
+      baseUrlResolved = path.resolve(cfg.baseUrl);
+      if (!fs.existsSync(baseUrlResolved)) {
+        errors.push(`Base url not found`);
+      }
+      if (!!cfg.inputDir) {
+        if (cfg.baseUrl.match(FORBIDDEN_CHARS)) {
+          errors.push(`Illegal characters in input directory`);
+        } else if (!fs.existsSync(path.join(baseUrlResolved, cfg.inputDir))) {
+          errors.push(`Input directory not found`);
+        }
+      }
     }
   }
-  err("Config not found.");
-  log(`Add config to ${chalk.cyan(`${PROJ_CFG_FILENAME}.js`)} in your project's root directory.`);
-  log(`See ${chalk.underline("@todo url here")} for documentation.`);
-  return null;
+  if (!cfg.outputDir) {
+    errors.push(`No output directory configured`);
+  } else if (cfg.outputDir.match(FORBIDDEN_CHARS)) {
+    errors.push(`Illegal characters in output directory`);
+  }
+  if (!cfg.assets?.length) {
+    errors.push("No assets listed");
+  } else {
+    // Assets config
+    for (const asset of cfg.assets) {
+      if (!asset.file) {
+        errors.push(`No file for asset`);
+      } else if (asset.file.match(FORBIDDEN_CHARS)) {
+        errors.push(`Illegal characters in asset file`);
+      } else if (!!cfg.baseUrl && !!cfg.inputDir) {
+        const assetFilePath = path.join(baseUrlResolved, cfg.inputDir, asset.file);
+        if (!fs.existsSync(assetFilePath)) {
+          errors.push(`Asset file '${assetFilePath}' not found`);
+        }
+      }
+      if (!asset.output?.length) {
+        errors.push(`No outputs listed for asset '${asset.file}'`);
+      } else {
+        // Outputs config
+        for (const output of asset.output) {
+          if (!output.filename) {
+            errors.push(`No file for output in asset '${asset.file}'`);
+          } else if (output.filename.match(FORBIDDEN_CHARS)) {
+            errors.push(`Illegal characters in asset file`);
+          }
+          if (!output.width && !output.copy) {
+            errors.push(`No width specified and copy flag not present for '${output.filename}'`);
+          }
+          if (!Number.isInteger(output.width) || (!!output.height && !Number.isInteger(output.height))) {
+            errors.push(`Width/height for '${output.filename}' not integers`);
+          }
+          if (!!output.fit && !["cover", "contain", "fill", "inside", "outside"].includes(output.fit)) {
+            errors.push(`Unrecognized 'fit' value for '${output.filename}'`);
+          }
+        }
+      }
+    }
+  }
+  if (errors.length > 0) {
+    err("Errors in asset resizer config:");
+    errors.forEach((e) => err(` * ${e}`));
+    return false;
+  }
+
+  return true;
 }

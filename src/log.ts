@@ -4,20 +4,21 @@ const DEBUG_MODE = process.env.ASSET_RESIZE_DEBUG === "true";
 
 const PROGRESS_WIDTH = 80;
 
-export function log(any: unknown) {
-  let out: string;
+function str(any: unknown): string {
   if (typeof any === "object") {
-    out = JSON.stringify(any, null, 2);
+    return JSON.stringify(any, null, 2);
   } else if (typeof any !== "undefined") {
-    out = any.toString();
-  } else {
-    out = "";
+    return any.toString();
   }
-  process.stdout.write(`${out}\n`);
+  return "";
 }
 
-export function err(message: string) {
-  log(chalk.red(message));
+export function log(any: unknown) {
+  process.stdout.write(`${str(any)}\n`);
+}
+
+export function err(any: unknown) {
+  process.stderr.write(`${chalk.red(str(any))}\n`);
 }
 
 export function debug(any: unknown) {

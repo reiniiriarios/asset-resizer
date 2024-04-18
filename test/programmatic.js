@@ -9,6 +9,11 @@ import config from "./assetresizer.config.mjs";
 
   console.log("");
 
+  console.log("[test] Parsing invalid config...");
+  await parseAllAssets("test/broken-config.js");
+
+  console.log("");
+
   console.log("[test] Parsing by loading custom config...");
   await parseAllAssets("test/assetresizer.config.mjs");
 
