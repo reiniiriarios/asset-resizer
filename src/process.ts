@@ -33,26 +33,29 @@ export async function parseAllAssets(config?: AssetResizerConfig | string): Prom
 
   async function parseEachAsset(assets: AssetResizerAsset[]): Promise<void> {
     for (const asset of assets) {
-      const assetPath = path.join(inputDir, asset.file);
       for (const output of asset.output) {
         log.progress(numOutputsParsed, numOutputs);
-        await parseAssetOutput(assetPath, output);
+        await parseAssetOutput(inputDir, asset.file, output);
         numOutputsParsed++;
       }
     }
     log.msg(`\r${chalk.green("Done!")} Processed: ${numAssets} input assets, ${numOutputs} created.`.padEnd(91, " "));
   }
 
-  async function parseAssetOutput(assetPath: string, output: AssetResizerOutput): Promise<boolean> {
-    if (!cfg?.flatten) {
-      // @todo create intermediate directories
+  async function parseAssetOutput(inputDir: string, assetPath: string, output: AssetResizerOutput): Promise<boolean> {
+    let outputPath = outputDir;
+    if (!cfg?.flatten && assetPath.includes("/")) {
+      // If not flattening, add additional directories from asset path to output path
+      outputPath = path.join(outputDir, assetPath.split("/").slice(0, -1).join("/"));
+      if (!fs.existsSync(outputPath)) {
+        fs.mkdirSync(outputPath, { recursive: true });
+      }
     }
 
-    const outputPath = path.join(outputDir, output.filename);
     try {
-      await sharp(assetPath)
+      await sharp(path.join(inputDir, assetPath))
         .resize(output.width, output.height ?? output.width, { fit: output.fit ?? "inside" })
-        .toFile(outputPath)
+        .toFile(path.join(outputPath, output.filename))
         .catch((e) => {
           throw e;
         });

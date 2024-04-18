@@ -1,9 +1,7 @@
-// This file would ordinarily be in the root directory of a project,
-// therefore the paths are configured as though it is.
 export default {
   baseUrl: "./test",
   inputDir: "assets",
-  outputDir: "build/test1",
+  outputDir: "build/test-mjs",
   flatten: true,
   assets: [
     {
@@ -55,7 +53,7 @@ export default {
       ],
     },
     {
-      file: "500x400.svg",
+      file: "subdir/500x400.svg",
       output: [
         {
           filename: "icon.jpg",

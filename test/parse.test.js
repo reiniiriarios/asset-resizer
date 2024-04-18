@@ -11,9 +11,16 @@ import cliConfig from "./cli.config.mjs";
 
 async function testAssets(cfg) {
   for (const asset of cfg.assets) {
+    // calculate where the output file should be
+    let outPath = cfg.outputDir;
+    if (!cfg.flatten && asset.file.includes("/")) {
+      // If not flattening, add additional directories from asset path to output path
+      const addlDirs = asset.file.split("/").slice(0, -1).join("/");
+      outPath = path.join(cfg.outputDir, addlDirs);
+    }
     for (const output of asset.output) {
+      const filePath = path.join("test", outPath, output.filename);
       // file exists
-      const filePath = path.join("test", cfg.outputDir, output.filename);
       expect(fs.existsSync(filePath)).toBe(true);
       // metadata is correct
       const meta = await sharp(filePath).metadata();
@@ -54,15 +61,20 @@ describe("parseAllAssets", () => {
     expect(spy.err).toHaveBeenCalled();
   });
 
-  test("correctly builds assets with config file", async () => {
+  test("correctly builds assets with ESModule config file", async () => {
     await parseAllAssets("test/test.config.mjs");
     expect(spy.err).not.toHaveBeenCalled();
     await testAssets(config);
   });
 
+  test("correctly builds assets with CommonJS config file", async () => {
+    await parseAllAssets("test/test.config.cjs");
+    expect(spy.err).not.toHaveBeenCalled();
+  });
+
   test("correctly builds assets with custom config", async () => {
     const config2 = structuredClone(config);
-    config2.outputDir = "build/test2";
+    config2.outputDir = "build/test-custom";
     await parseAllAssets(config2);
     expect(spy.err).not.toHaveBeenCalled();
     await testAssets(config2);
@@ -72,20 +84,6 @@ describe("parseAllAssets", () => {
 describe("cli", () => {
   test("correctly builds assets", async () => {
     execSync("npx asset-resizer parse --config test/cli.config.mjs");
-    for (const asset of cliConfig.assets) {
-      for (const output of asset.output) {
-        // file exists
-        const filePath = path.join("test", cliConfig.outputDir, output.filename);
-        expect(fs.existsSync(filePath)).toBe(true);
-        // metadata is correct
-        const meta = await sharp(filePath).metadata();
-        // don't test inside and outside width, they vary
-        if (output.width && output.fit && !["inside", "outside"].includes(output.fit)) {
-          expect(meta.width).toBe(output.width);
-          const height = output.height ? output.height : output.width;
-          expect(meta.height).toBe(height);
-        }
-      }
-    }
+    await testAssets(cliConfig);
   }, 7500); // sometimes takes a little longer
 });
