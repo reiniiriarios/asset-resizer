@@ -1,13 +1,16 @@
 # asset-resizer
 
-<!-- ![build](https://img.shields.io/github/actions/workflow/status/reiniiriarios/asset-resizer/publish?branch=main)
+<!-- ![build](https://img.shields.io/github/actions/workflow/status/reiniiriarios/asset-resizer/publish?branch=main) -->
+
 ![downloads](https://img.shields.io/npm/dt/asset-resizer)
 ![types: Typescript](https://img.shields.io/badge/types-Typescript-blue)
 ![license: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-blueviolet)
-[![npm version](https://img.shields.io/npm/v/asset-resizer)](https://www.npmjs.com/package/asset-resizer)
-[![code style: prettier](https://img.shields.io/badge/code%20style-prettier-ff69b4)](https://github.com/prettier/prettier#readme) -->
 
-To get started, install `asset-resizer` with:
+A minimal package to easily automate image asset resizing as a part of a build process. Uses [sharp](https://github.com/lovell/sharp).
+
+## Getting Started
+
+Install `asset-resizer` with:
 
 ```
 npm i asset-resizer --save-dev
@@ -19,7 +22,35 @@ Alternatively, you may specify a custom config file.
 
 [See example config.](examples/assetresizer.config.mjs)
 
-### CLI
+```js
+// assetresizer.config.js
+// alt: module.exports = {
+export default {
+  baseUrl: ".",
+  inputDir: "assets",
+  outputDir: "build",
+  flatten: true,
+  assets: [
+    {
+      file: "icon.png",
+      output: [
+        {
+          file: "icon512.png",
+          width: 512,
+        },
+        {
+          file: "icon32.png",
+          width: 32,
+        },
+        //...
+      ],
+    },
+    //...
+  ],
+};
+```
+
+### Command Line Usage
 
 Run:
 
