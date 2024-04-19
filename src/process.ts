@@ -62,12 +62,19 @@ export async function parseAllAssets(config?: AssetResizerConfig | string): Prom
     }
 
     try {
-      await sharp(path.join(inputDir, assetPath))
-        .resize(output.width, output.height ?? output.width, { fit: output.fit ?? "inside" })
-        .toFile(path.join(outputPath, output.file))
-        .catch((e) => {
-          throw e;
-        });
+      const fileIn = path.join(inputDir, assetPath);
+      const fileOut = path.join(outputPath, output.file);
+      if (output.copy) {
+        fs.copyFileSync(fileIn, fileOut);
+      } else {
+        const height = output.height && output.height > 0 ? output.height : output.width;
+        await sharp(fileIn)
+          .resize(output.width, height, { fit: output.fit ?? "inside" })
+          .toFile(fileOut)
+          .catch((e) => {
+            throw e;
+          });
+      }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       log.msg("\n");

@@ -7,8 +7,21 @@ export default {
   flatten: true,
   assets: [
     {
+      file: "app/manifest.json",
+      output: [
+        {
+          file: "manifest.json",
+          copy: true,
+        },
+      ],
+    },
+    {
       file: "300x300.svg",
       output: [
+        {
+          file: "300x300.svg",
+          copy: true,
+        },
         {
           file: "50x50.png",
           width: 50,

@@ -19,13 +19,13 @@ async function testAssets(cfg) {
       outPath = path.join(cfg.outputDir, addlDirs);
     }
     for (const output of asset.output) {
-      const filePath = path.join("test", outPath, output.filename);
+      const filePath = path.join("test", outPath, output.file);
       // file exists
       expect(fs.existsSync(filePath)).toBe(true);
-      // metadata is correct
-      const meta = await sharp(filePath).metadata();
       // don't test inside and outside width, they vary
       if (output.width && output.fit && !["inside", "outside"].includes(output.fit)) {
+        // metadata is correct
+        const meta = await sharp(filePath).metadata();
         expect(meta.width).toBe(output.width);
         const height = output.height ? output.height : output.width;
         expect(meta.height).toBe(height);

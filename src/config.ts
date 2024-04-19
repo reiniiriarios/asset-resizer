@@ -114,6 +114,7 @@ function validateConfig(cfg: AssetResizerConfig | null | undefined): boolean {
           } else if (output.file.match(FORBIDDEN_CHARS)) {
             errors.push(`Illegal characters in asset file`);
           } else if (
+            !output.copy &&
             !["jpg", "jpeg", "png", "gif", "webp", "avif", "tiff", "dzi", "v"].some((ext) =>
               output.file.endsWith(`.${ext}`),
             )
@@ -123,7 +124,10 @@ function validateConfig(cfg: AssetResizerConfig | null | undefined): boolean {
           if (!output.width && !output.copy) {
             errors.push(`No width specified and copy flag not present for '${output.file}'`);
           }
-          if (!Number.isInteger(output.width) || (!!output.height && !Number.isInteger(output.height))) {
+          if (
+            !output.copy &&
+            (!Number.isInteger(output.width) || (!!output.height && !Number.isInteger(output.height)))
+          ) {
             errors.push(`Width/height for '${output.file}' not integers`);
           }
           if (!!output.fit && !["cover", "contain", "fill", "inside", "outside"].includes(output.fit)) {
