@@ -1,5 +1,12 @@
 # asset-resizer
 
+<!-- ![build](https://img.shields.io/github/actions/workflow/status/reiniiriarios/asset-resizer/publish?branch=main)
+![downloads](https://img.shields.io/npm/dt/asset-resizer)
+![types: Typescript](https://img.shields.io/badge/types-Typescript-blue)
+![license: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-blueviolet)
+[![npm version](https://img.shields.io/npm/v/asset-resizer)](https://www.npmjs.com/package/asset-resizer)
+[![code style: prettier](https://img.shields.io/badge/code%20style-prettier-ff69b4)](https://github.com/prettier/prettier#readme) -->
+
 To get started, install `asset-resizer` with:
 
 ```
