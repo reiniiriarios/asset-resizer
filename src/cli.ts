@@ -24,6 +24,7 @@ yargs(hideBin(process.argv))
     () => {},
     () => {
       log.msg(`See ${chalk.magenta("asset-resizer --help")} for command options.`);
+      log.msg(`See ${chalk.underline("https://github.com/reiniiriarios/asset-resizer#readme")} for documentation.`);
     },
   )
   .command(

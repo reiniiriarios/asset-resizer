@@ -39,7 +39,7 @@ export async function loadConfig(file?: string): Promise<AssetResizerConfig | nu
     if (!file) {
       log.err("Config not found.");
       log.msg(`Add config to ${chalk.cyan(`${PROJ_CFG_FILENAME}.js`)} in your project's root directory.`);
-      log.msg(`See ${chalk.underline("@todo url here")} for documentation.`);
+      log.msg(`See ${chalk.underline("https://github.com/reiniiriarios/asset-resizer#readme")} for documentation.`);
       return null;
     }
   }
