@@ -14,11 +14,9 @@ Install `asset-resizer` with:
 npm i asset-resizer --save-dev
 ```
 
-Then add a config file to your root directory specifying what assets should be resized and where.
-The config file may be `assetresizer.config.js`, `assetresizer.config.mjs`, or `assetresizer.config.cjs`.
-Alternatively, you may specify a custom config file.
+Then add `assetresizer.config.js` to your root directory, specifying what assets should be resized and where. Alternatively, you may specify a custom config file.
 
-[See example config.](examples/assetresizer.config.mjs)
+[See example config.](examples/assetresizer.config.js)
 
 ```js
 // assetresizer.config.js

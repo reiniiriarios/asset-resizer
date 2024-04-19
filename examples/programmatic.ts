@@ -1,4 +1,5 @@
 import { parseAllAssets, AssetResizerConfig } from "asset-resizer";
+// alt: const { parseAllAssets } = require("asset-resizer");
 
 // With default config file
 parseAllAssets().then(() => {
