@@ -1,10 +1,8 @@
 # asset-resizer
 
-<!-- ![build](https://img.shields.io/github/actions/workflow/status/reiniiriarios/asset-resizer/publish?branch=main) -->
-
 ![downloads](https://img.shields.io/npm/dt/asset-resizer)
 ![types: Typescript](https://img.shields.io/badge/types-Typescript-blue)
-![license: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-blueviolet)
+![build](https://img.shields.io/github/actions/workflow/status/reiniiriarios/asset-resizer/publish.yaml)
 
 A minimal package to easily automate image asset resizing as a part of a build process. Uses [sharp](https://github.com/lovell/sharp).
 
