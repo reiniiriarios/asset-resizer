@@ -4,7 +4,7 @@ import { AssetResizerConfig } from "./types.js";
 import log from "./log.js";
 import chalk from "chalk";
 
-const PROJ_ROOT = path.resolve("./");
+const PROJ_ROOT = path.resolve(".");
 const PROJ_CFG_FILENAME = "assetresizer.config";
 const PROJ_CFG_FILE = path.join(PROJ_ROOT, PROJ_CFG_FILENAME);
 
@@ -24,11 +24,6 @@ const configDefaults: AssetResizerConfig = {
 const dynamicImport = new Function("specifier", "return import(specifier)");
 
 export async function loadConfig(file?: string): Promise<AssetResizerConfig | null> {
-  async function importConfigFromFile(filepath: string): Promise<AssetResizerConfig | null> {
-    const cfg: { default: AssetResizerConfig } = await dynamicImport(`file://${filepath}`);
-    return cfg.default;
-  }
-
   if (!file) {
     for (const ext of [".js", ".mjs", ".cjs"]) {
       if (fs.existsSync(PROJ_CFG_FILE + ext)) {
@@ -45,12 +40,23 @@ export async function loadConfig(file?: string): Promise<AssetResizerConfig | nu
   }
 
   log.msg(`Loading config from ${chalk.cyan(file)}...`);
-  const filePath = path.join(PROJ_ROOT, file);
-  if (!fs.existsSync(filePath)) {
+
+  // Make absolute if relative.
+  if (!file.match(/^(?:\/|[a-z]:[\/\\])/i)) {
+    file = path.join(PROJ_ROOT, file);
+  }
+
+  if (!fs.existsSync(file)) {
     log.err("Config not found.");
     return null;
   }
-  const cfg = await importConfigFromFile(filePath);
+
+  // Windows fix for file:// protocol.
+  if (file.match(/^[a-z]:[\/\\]/i)) {
+    file = `/${file.replace(/\\/g, "/")}`;
+  }
+
+  const { default: cfg }: { default: AssetResizerConfig } = await dynamicImport(`file://${file}`);
   if (!validateConfig(cfg)) {
     return null;
   }
