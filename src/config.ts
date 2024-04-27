@@ -42,7 +42,7 @@ export async function loadConfig(file?: string): Promise<AssetResizerConfig | nu
   log.msg(`Loading config from ${chalk.cyan(file)}...`);
 
   // Make absolute if relative.
-  if (!file.match(/^(?:\/|[a-z]:[\/\\])/i)) {
+  if (!file.match(/^(?:\/|[a-z]:[/\\])/i)) {
     file = path.join(PROJ_ROOT, file);
   }
 
@@ -52,7 +52,7 @@ export async function loadConfig(file?: string): Promise<AssetResizerConfig | nu
   }
 
   // Windows fix for file:// protocol.
-  if (file.match(/^[a-z]:[\/\\]/i)) {
+  if (file.match(/^[a-z]:[/\\]/i)) {
     file = `/${file.replace(/\\/g, "/")}`;
   }
 
