@@ -2,7 +2,7 @@
   "name": "asset-resizer",
   "displayName": "Asset Resizer",
   "description": "Resize assets as part of build workflow.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "dist/main.js",
   "type": "module",
   "files": [
