@@ -1,6 +1,8 @@
+/** @type {import('asset-resizer').AssetResizerConfig} */
+
 // Include `assetresizer.config.js` in your project's root directory.
 // Alternative extensions `.mjs` and `.cjs` supported as well.
-//
+
 // alt: module.exports = {
 export default {
   baseUrl: ".",
