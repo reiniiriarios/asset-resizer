@@ -1,6 +1,7 @@
 # asset-resizer
 
-![downloads](https://img.shields.io/npm/dt/asset-resizer)
+[![latest version](https://img.shields.io/npm/v/asset-resizer?label=latest)](https://www.npmjs.com/package/asset-resizer)
+[![downloads](https://img.shields.io/npm/dt/asset-resizer)](https://www.npmjs.com/package/asset-resizer)
 ![types: Typescript](https://img.shields.io/badge/types-Typescript-blue)
 ![build](https://img.shields.io/github/actions/workflow/status/reiniiriarios/asset-resizer/publish.yaml)
 
