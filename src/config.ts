@@ -25,9 +25,11 @@ const dynamicImport = new Function("specifier", "return import(specifier)");
 
 export async function loadConfig(file?: string): Promise<AssetResizerConfig | null> {
   if (!file) {
+    // Autoload
     for (const ext of [".js", ".mjs", ".cjs"]) {
       if (fs.existsSync(PROJ_CFG_FILE + ext)) {
         file = PROJ_CFG_FILE + ext;
+        log.msg(`Loading config from ${chalk.cyan(PROJ_CFG_FILENAME)}...`);
         break;
       }
     }
@@ -37,18 +39,17 @@ export async function loadConfig(file?: string): Promise<AssetResizerConfig | nu
       log.msg(`See ${chalk.underline("https://github.com/reiniiriarios/asset-resizer#readme")} for documentation.`);
       return null;
     }
-  }
-
-  log.msg(`Loading config from ${chalk.cyan(file)}...`);
-
-  // Make absolute if relative.
-  if (!file.match(/^(?:\/|[a-z]:[/\\])/i)) {
-    file = path.join(PROJ_ROOT, file);
-  }
-
-  if (!fs.existsSync(file)) {
-    log.err("Config not found.");
-    return null;
+  } else {
+    // Specified in config
+    log.msg(`Loading config from ${chalk.cyan(file)}...`);
+    // Make absolute if relative.
+    if (!file.match(/^(?:\/|[a-z]:[/\\])/i)) {
+      file = path.join(PROJ_ROOT, file);
+    }
+    if (!fs.existsSync(file)) {
+      log.err("Config not found.");
+      return null;
+    }
   }
 
   // Windows fix for file:// protocol.
