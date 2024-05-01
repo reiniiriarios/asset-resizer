@@ -83,7 +83,7 @@ describe("parseAllAssets", () => {
 
 describe("cli", () => {
   test("correctly builds assets", async () => {
-    execSync("npx asset-resizer parse --config test/cli.config.mjs");
+    execSync("asset-resizer parse --config test/cli.config.mjs");
     await testAssets(cliConfig);
   }, 7500); // sometimes takes a little longer
 });
